@@ -1,6 +1,6 @@
 ################## BASE IMAGE ######################
 
-FROM brianyee/r-jupyter
+FROM brianyee/r-jupyter:7ab93d82d6a7e546bdc6e5863df9613a4ccb5817f87c46cad73de806869bdc2f
 
 ################## METADATA ######################
 
@@ -26,6 +26,7 @@ RUN adduser --disabled-password \
     --uid ${NB_UID} \
     ${NB_USER}
 
+RUN pip install --no-cache-dir notebook==5.*
 RUN apt-get remove -y libc6-dev # https://github.com/riscv/riscv-gnu-toolchain/issues/105 (the solution that sucks, but curl wont install with it)
 RUN Rscript -e 'install.packages(c("curl","httr"))' # https://github.com/Microsoft/microsoft-r-open/issues/63
 RUN apt-get install -y libc6-dev
