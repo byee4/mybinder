@@ -34,9 +34,14 @@ RUN apt-get install -y libhdf5-dev && Rscript -e 'install.packages("hdf5r")'
 RUN Rscript -e 'install.packages("Seurat")'
 RUN Rscript -e 'remove.packages(c("curl","httr"))' # https://github.com/Microsoft/microsoft-r-open/issues/63
 RUN Rscript -e 'IRkernel::installspec(name = "R-Seurat", displayname = "R-Seurat", user = FALSE)'
+RUN apt-get remove -y libc6-dev # https://github.com/riscv/riscv-gnu-toolchain/issues/105 (the solution that sucks, but curl wont install with it)
+RUN Rscript -e 'install.packages(c("curl","httr"))' # https://github.com/Microsoft/microsoft-r-open/issues/63
+RUN apt-get install -y libc6-dev
 
 # Make sure the contents of our repo are in ${HOME}
 COPY . ${HOME}
 USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
+
+WORKDIR /home/${NB_USER}
