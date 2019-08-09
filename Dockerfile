@@ -31,7 +31,8 @@ RUN conda install pandas \
   numpy \
   scikit-learn \
   matplotlib=2.1.1 \
-  basemap
+  basemap \
+  jupyter
 
 # Make sure the contents of our repo are in ${HOME}
 COPY . ${HOME}
